@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pergunta importante</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f5f4f0;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+  .card {
+    max-width: 420px;
+    width: 90%;
+    background: #fff;
+    border: 1px solid #e0dfd8;
+    border-radius: 16px;
+    padding: 2.5rem 2rem 2rem;
+    text-align: center;
+  }
+  .emoji { font-size: 52px; margin-bottom: 1rem; }
+  h2 { font-size: 22px; font-weight: 500; color: #1a1a1a; margin-bottom: 0.5rem; }
+  p { font-size: 15px; color: #666; line-height: 1.7; margin-bottom: 1.5rem; }
+  .btn {
+    display: inline-block;
+    padding: 11px 30px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background: #fff;
+    font-size: 15px;
+    cursor: pointer;
+    margin: 4px;
+    transition: background 0.15s;
+  }
+  .btn:hover { background: #f5f4f0; }
+  .btn-no {
+    color: #888;
+    position: static;
+  }
+  .btn-no.fugindo {
+    position: fixed;
+  }
+  .confirmed { display: none; }
+  .confirmed.show { display: block; }
+  .confirmed p { color: #2a7a4b; font-size: 16px; margin: 0; }
+  .actions.hide { display: none; }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="emoji">🫵</div>
+  <h2>Tenho uma pergunta séria.</h2>
+  <p>Esse final de semana eu preciso de alguém com bom gosto, bom humor e seja uma boa companhia.<br><br>Você se encaixa nos três. Bora?</p>
+
+  <div class="actions" id="actions">
+    <button class="btn" onclick="aceitar()">Claro, tô dentro 😄</button>
+    <button class="btn btn-no" id="btnNo" onclick="tentarRecusar()">Não posso...</button>
+  </div>
+
+  <div class="confirmed" id="confirmed"><img src="data:image/png;base64,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" style="width:180px; border-radius:12px; margin-bottom:1rem;">
+    <p>Sabia que você ia tomar a decisão certa 🥳</p>
+  </div>
+</div>
+
+<script>
+  const btnNo = document.getElementById('btnNo');
+  let attempts = 0;
+  const respostas = [
+    'Tem certeza? 🤨',
+    'Pensa melhor...',
+    'Isso não tá certo',
+    'Última chance 👀',
+    'Tá bom, desisto... 😔'
+  ];
+
+  function tentarRecusar() {
+    btnNo.classList.add('fugindo');
+    const margin = 20;
+    const btnW = btnNo.offsetWidth;
+    const btnH = btnNo.offsetHeight;
+    const maxX = window.innerWidth - btnW - margin;
+    const maxY = window.innerHeight - btnH - margin;
+    const x = Math.floor(Math.random() * (maxX - margin)) + margin;
+    const y = Math.floor(Math.random() * (maxY - margin)) + margin;
+    btnNo.style.left = x + 'px';
+    btnNo.style.top = y + 'px';
+    if (attempts < respostas.length) {
+      btnNo.textContent = respostas[attempts];
+    }
+    attempts++;
+  }
+
+  function aceitar() {
+    document.getElementById('actions').classList.add('hide');
+    document.getElementById('confirmed').classList.add('show');
+    btnNo.style.display = 'none';
+  }
+</script>
+</body>
+</html>
